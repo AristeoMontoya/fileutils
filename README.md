@@ -6,3 +6,6 @@ The idea is that I have a main _toolkit_ with multiple operations, instead of a 
 
 ## Suggested usage
 Add an alias to call `fileutils` from anywhere, or add `fileutils` to your path.
+
+## Disclaimer
+This hasn't been thoroughly tested with PowerShell, but at least it works with WSL and git bash.
