@@ -1,2 +1,45 @@
-#!/usr/bin/env python
-print("hi")
+#!/usr/bin/env python3
+import argparse
+import sys
+import os
+from copy_from_list import copy_from_list
+from search_in_content import search_in_content
+
+MODULE_DIR = 'modules/**'
+
+sys.path.append('modules/**')
+
+def copy(args):
+    task = copy_from_list(args)
+    task.exec_task()
+
+def find_in_content(args):
+    task = search_in_content(args)
+    task.exec_task()
+
+def get_arguments():
+    parser = argparse.ArgumentParser(description="File toolkit")
+    parser.add_argument('-l', '--list-modules', help='List available modules', required=False, action='store_const', const=True)
+    subparsers = parser.add_subparsers(help='sub command help')
+       
+    # Copy from list parser
+    parser_copy = subparsers.add_parser('copy', help='Copy files from list')
+    parser_copy.add_argument('file_list', help='List of target files')
+    parser_copy.add_argument('destination_dir', help='Directory to copy files')
+    parser_copy.add_argument('-t', '--target', help='Directory containing files', required=False, default='.')
+    parser_copy.set_defaults(func=copy)
+
+    # Search in content parser
+    parser_search = subparsers.add_parser('grep', help='Find in content')
+    parser_search.add_argument('file_list', help='A file containing a list of files')
+    parser_search.add_argument('criteria', help='Search criteria to match in files')
+    parser_search.set_defaults(func=find_in_content)
+
+    return parser.parse_args()
+
+def list_modules():
+    os.listdir(MODULE_DIR)
+
+
+arguments = get_arguments()
+arguments.func(arguments)
