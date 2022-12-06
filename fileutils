@@ -4,6 +4,7 @@ import sys
 import os
 from copy_from_list import copy_from_list
 from search_in_content import search_in_content
+from find_from_list import find_from_list
 
 MODULE_DIR = 'modules/**'
 
@@ -17,6 +18,10 @@ def find_in_content(args):
     task = search_in_content(args)
     task.exec_task()
 
+def find_in_list(args):
+    task = find_from_list(args)
+    task.exec_task()
+
 def get_arguments():
     parser = argparse.ArgumentParser(description="File toolkit")
     parser.add_argument('-l', '--list-modules', help='List available modules', required=False, action='store_const', const=True)
@@ -28,6 +33,12 @@ def get_arguments():
     parser_copy.add_argument('destination_dir', help='Directory to copy files')
     parser_copy.add_argument('-t', '--target', help='Directory containing files', required=False, default='.')
     parser_copy.set_defaults(func=copy)
+
+    # find from list parser
+    parser_copy = subparsers.add_parser('find', help='Find files from list')
+    parser_copy.add_argument('file_list', help='List of target files')
+    parser_copy.add_argument('target_dir', help='Directory to search files', default='.')
+    parser_copy.set_defaults(func=find_in_list)
 
     # Search in content parser
     parser_search = subparsers.add_parser('grep', help='Find in content')
